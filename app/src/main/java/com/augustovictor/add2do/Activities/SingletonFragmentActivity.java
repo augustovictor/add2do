@@ -30,6 +30,6 @@ public abstract class SingletonFragmentActivity extends AppCompatActivity {
         }
     }
 
-    public abstract Fragment createFragment();
+    protected abstract Fragment createFragment();
 
 }
