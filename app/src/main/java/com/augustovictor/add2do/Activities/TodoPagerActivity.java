@@ -35,7 +35,7 @@ public class TodoPagerActivity extends FragmentActivity {
         UUID todoId = (UUID) getIntent().getSerializableExtra(EXTRA_TODO_ID);
 
         mViewPager = (ViewPager) findViewById(R.id.activity_todo_pager);
-        mTodos = TodoManager.get(this).getTodos();
+        mTodos = TodoManager.get(this).getmTodos();
 
         FragmentManager fm = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {

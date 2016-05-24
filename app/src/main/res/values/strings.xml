@@ -3,4 +3,5 @@
     <string name="tv_todo_title_txt">Todo</string>
     <string name="et_todo_title_hint_txt">Title</string>
     <string name="ck_task_done_txt">Done</string>
+    <string name="item_new_todo_txt">Add</string>
 </resources>

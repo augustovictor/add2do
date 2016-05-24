@@ -14,17 +14,17 @@ public class TodoManager {
 
     private Context mContext;
 
-    private List<Todo> todos;
+    private List<Todo> mTodos;
 
     public TodoManager(Context context) {
         mContext = context.getApplicationContext();
-        todos = new ArrayList<>();
+        mTodos = new ArrayList<>();
 
         for (int i = 0; i < 100; i++) {
             Todo todo = new Todo();
             todo.setmTitle("Task " + i);
             todo.setmDone(i%2 == 0);
-            todos.add(todo);
+            mTodos.add(todo);
         }
     }
 
@@ -35,16 +35,20 @@ public class TodoManager {
         return sTodoManager;
     }
 
-    public List<Todo> getTodos() {
-        return todos;
+    public List<Todo> getmTodos() {
+        return mTodos;
     }
 
     public Todo getTodo(UUID todoId) {
-        for (Todo t : this.todos) {
+        for (Todo t : this.mTodos) {
             if (t.getmId().equals(todoId)) {
                 return t;
             }
         }
         return null;
+    }
+
+    public void addTodo(Todo t) {
+        mTodos.add(t);
     }
 }

@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -27,6 +30,12 @@ public class TodoListFragment extends Fragment{
 
     private RecyclerView mRecyclerView;
     private TodoAdapter mAdapter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -115,10 +124,33 @@ public class TodoListFragment extends Fragment{
         }
     }
 
+    // MENU
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_todo_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menu_item_new_todo:
+                Todo todo = new Todo();
+                TodoManager.get(getActivity()).addTodo(todo);
+                Intent i = TodoPagerActivity.newIntent(getActivity(), todo.getmId());
+                startActivity(i);
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void updateUI() {
         TodoManager todoManager = TodoManager.get(getActivity());
 
-        List<Todo> todos = todoManager.getTodos();
+        List<Todo> todos = todoManager.getmTodos();
 
         if(mAdapter == null) {
             mAdapter = new TodoAdapter(todos);
