@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.augustovictor.add2do.Activities.TodoPagerActivity;
@@ -57,6 +58,14 @@ public class TodoListFragment extends Fragment{
             itemView.setOnClickListener(this);
             mTitle = (TextView) itemView.findViewById(R.id.vt_list_todo_item);
             mDone = (CheckBox) itemView.findViewById(R.id.ck_list_todo_item);
+
+            mDone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mTodo.setmDone(isChecked);
+                }
+            });
+
         }
 
         public void bindTodo(Todo todo) {

@@ -48,10 +48,12 @@ public class TodoFragment extends Fragment {
         mTitle.setText(mTodo.getmTitle());
 
         mDone = (CheckBox) v.findViewById(R.id.ck_task_done);
+        mDone.setChecked(mTodo.ismDone());
+
         mDone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mTodo.setmDone(true);
+                mTodo.setmDone(isChecked);
             }
         });
 
