@@ -125,7 +125,7 @@ public class TodoListFragment extends Fragment{
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setTodos(todos);
-            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged(); // TODO: 5/24/16 identify changed item's position and use notifyItemChanged(position);
         }
 
         mAdapter = new TodoAdapter(todos);

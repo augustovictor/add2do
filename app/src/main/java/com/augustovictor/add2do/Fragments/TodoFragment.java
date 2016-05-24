@@ -1,7 +1,5 @@
 package com.augustovictor.add2do.Fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,8 +12,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import com.augustovictor.add2do.Activities.SingletonFragmentActivity;
-import com.augustovictor.add2do.Activities.TodoActivity;
 import com.augustovictor.add2do.Models.Todo;
 import com.augustovictor.add2do.Models.TodoManager;
 import com.augustovictor.add2do.R;
