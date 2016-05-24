@@ -12,7 +12,7 @@ public class Todo {
 
 
     public Todo() {
-
+        mId = UUID.randomUUID();
     }
 
     public Todo(UUID mId) {
@@ -33,5 +33,13 @@ public class Todo {
 
     public void setmTitle(String mTitle) {
         this.mTitle = mTitle;
+    }
+
+    public UUID getmId() {
+        return mId;
+    }
+
+    public void setmId(UUID mId) {
+        this.mId = mId;
     }
 }

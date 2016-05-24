@@ -1,5 +1,7 @@
 package com.augustovictor.add2do.Fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,12 +15,17 @@ import android.widget.EditText;
 import com.augustovictor.add2do.Activities.SingletonFragmentActivity;
 import com.augustovictor.add2do.Activities.TodoActivity;
 import com.augustovictor.add2do.Models.Todo;
+import com.augustovictor.add2do.Models.TodoManager;
 import com.augustovictor.add2do.R;
+
+import java.util.UUID;
 
 /**
  * Created by victoraweb on 5/23/16.
  */
 public class TodoFragment extends Fragment {
+
+    private static final String ARG_TODO_ID = "todo_id";
 
     private Todo mTodo;
     private EditText mTitle;
@@ -27,7 +34,9 @@ public class TodoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTodo = new Todo();
+
+        UUID todoId = (UUID) getArguments().getSerializable(ARG_TODO_ID);
+        mTodo = TodoManager.get(getActivity()).getTodo(todoId);
     }
 
     @Nullable
@@ -36,6 +45,7 @@ public class TodoFragment extends Fragment {
         View v = inflater.inflate(R.layout.todo_fragment, container, false);
 
         mTitle = (EditText) v.findViewById(R.id.et_task_title);
+        mTitle.setText(mTodo.getmTitle());
 
         mDone = (CheckBox) v.findViewById(R.id.ck_task_done);
         mDone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -46,5 +56,13 @@ public class TodoFragment extends Fragment {
         });
 
         return v;
+    }
+
+    public static TodoFragment newInstance(UUID id) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_TODO_ID, id);
+        TodoFragment todoFragment = new TodoFragment();
+        todoFragment.setArguments(args);
+        return todoFragment;
     }
 }

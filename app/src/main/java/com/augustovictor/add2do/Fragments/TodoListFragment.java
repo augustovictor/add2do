@@ -1,5 +1,6 @@
 package com.augustovictor.add2do.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.augustovictor.add2do.Activities.TodoPagerActivity;
 import com.augustovictor.add2do.Models.Todo;
 import com.augustovictor.add2do.Models.TodoManager;
 import com.augustovictor.add2do.R;
@@ -44,7 +46,7 @@ public class TodoListFragment extends Fragment{
         updateUI();
     }
 
-    private class TodoHolder extends RecyclerView.ViewHolder {
+    private class TodoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Todo mTodo;
         private TextView mTitle;
@@ -52,6 +54,7 @@ public class TodoListFragment extends Fragment{
 
         public TodoHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             mTitle = (TextView) itemView.findViewById(R.id.vt_list_todo_item);
             mDone = (CheckBox) itemView.findViewById(R.id.ck_list_todo_item);
         }
@@ -63,6 +66,11 @@ public class TodoListFragment extends Fragment{
         }
 
 
+        @Override
+        public void onClick(View v) {
+            Intent i = TodoPagerActivity.newIntent(getActivity(), mTodo.getmId());
+            startActivity(i);
+        }
     }
 
     private class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
