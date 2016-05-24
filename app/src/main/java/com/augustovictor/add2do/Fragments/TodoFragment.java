@@ -1,17 +1,22 @@
 package com.augustovictor.add2do.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.augustovictor.add2do.Activities.TodoListActivity;
 import com.augustovictor.add2do.Models.Todo;
 import com.augustovictor.add2do.Models.TodoManager;
 import com.augustovictor.add2do.R;
@@ -29,12 +34,21 @@ public class TodoFragment extends Fragment {
     private EditText mTitle;
     private CheckBox mDone;
 
+    public static TodoFragment newInstance(UUID id) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_TODO_ID, id);
+        TodoFragment todoFragment = new TodoFragment();
+        todoFragment.setArguments(args);
+        return todoFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         UUID todoId = (UUID) getArguments().getSerializable(ARG_TODO_ID);
         mTodo = TodoManager.get(getActivity()).getTodo(todoId);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -75,11 +89,26 @@ public class TodoFragment extends Fragment {
         return v;
     }
 
-    public static TodoFragment newInstance(UUID id) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_TODO_ID, id);
-        TodoFragment todoFragment = new TodoFragment();
-        todoFragment.setArguments(args);
-        return todoFragment;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_todo_item, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.menu_item_remove_todo:
+                TodoManager.get(getActivity()).removeTodo(mTodo);
+                Intent i = TodoListActivity.newIntent(getActivity());
+                startActivity(i);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }

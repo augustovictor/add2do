@@ -51,4 +51,8 @@ public class TodoManager {
     public void addTodo(Todo t) {
         mTodos.add(t);
     }
+
+    public void removeTodo(Todo t) {
+        this.mTodos.remove(t);
+    }
 }

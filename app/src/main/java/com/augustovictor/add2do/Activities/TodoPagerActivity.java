@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.augustovictor.add2do.Fragments.TodoFragment;
 import com.augustovictor.add2do.Models.Todo;
@@ -21,7 +21,7 @@ import java.util.UUID;
 /**
  * Created by victoraweb on 5/23/16.
  */
-public class TodoPagerActivity extends FragmentActivity {
+public class TodoPagerActivity extends AppCompatActivity {
 
     private static final String EXTRA_TODO_ID = "com.augustovictor.add2do.todo_id";
     private ViewPager mViewPager;
