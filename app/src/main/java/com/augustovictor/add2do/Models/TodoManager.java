@@ -2,10 +2,12 @@ package com.augustovictor.add2do.Models;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.augustovictor.add2do.Database.TodoDbSchema.TodoTable;
 import com.augustovictor.add2do.Helpers.TodoHelper;
+import com.augustovictor.add2do.Utils.TodoCursorWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +37,6 @@ public class TodoManager {
     public TodoManager(Context context) {
         mContext = context.getApplicationContext();
         mDb = new TodoHelper(mContext).getWritableDatabase();
-//        mTodos = new ArrayList<>();
-
-        for (int i = 0; i < 100; i++) {
-            Todo todo = new Todo();
-            todo.setmTitle("Task " + i);
-            todo.setmDone(i%2 == 0);
-//            mTodos.add(todo);
-        }
     }
 
     public static TodoManager get(Context context) {
@@ -53,16 +47,35 @@ public class TodoManager {
     }
 
     public List<Todo> getmTodos() {
-        return new ArrayList<>();
+        TodoCursorWrapper cursor = queryTodos(null, null);
+        List<Todo> todos = new ArrayList<>();
+        try {
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                todos.add(cursor.getTodo());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return todos;
     }
 
     public Todo getTodo(UUID todoId) {
-//        for (Todo t : this.mTodos) {
-//            if (t.getmId().equals(todoId)) {
-//                return t;
-//            }
-//        }
-        return null;
+        TodoCursorWrapper cursor = queryTodos(
+            TodoTable.Cols.UUID + " = ?", new String[] { todoId.toString() }
+        );
+
+        try {
+            if(cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getTodo();
+        } finally {
+            cursor.close();
+        }
     }
 
     public void addTodo(Todo t) {
@@ -78,5 +91,19 @@ public class TodoManager {
         String uuidString = t.getmId().toString();
         ContentValues values = getContentValues(t);
         mDb.update(TodoTable.NAME, values, TodoTable.Cols.UUID + " = ?", new String[] { uuidString });
+    }
+
+    private TodoCursorWrapper queryTodos(String whereClause, String[] whereArgs) {
+        Cursor cursor = mDb.query(
+            TodoTable.NAME,
+            null,
+            whereClause,
+            whereArgs,
+            null,
+            null,
+            null
+        );
+
+        return new TodoCursorWrapper(cursor);
     }
 }
