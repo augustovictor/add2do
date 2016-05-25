@@ -73,4 +73,10 @@ public class TodoManager {
     public void removeTodo(Todo t) {
 //        this.mTodos.remove(t);
     }
+
+    public void updateTodo(Todo t) {
+        String uuidString = t.getmId().toString();
+        ContentValues values = getContentValues(t);
+        mDb.update(TodoTable.NAME, values, TodoTable.Cols.UUID + " = ?", new String[] { uuidString });
+    }
 }
