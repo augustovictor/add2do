@@ -1,6 +1,9 @@
 package com.augustovictor.add2do.Models;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.augustovictor.add2do.Helpers.TodoHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +15,14 @@ import java.util.UUID;
 public class TodoManager {
     private static TodoManager sTodoManager;
 
-    private Context mContext;
-
     private List<Todo> mTodos;
+
+    private Context mContext;
+    private SQLiteDatabase mDb;
 
     public TodoManager(Context context) {
         mContext = context.getApplicationContext();
+        mDb = new TodoHelper(mContext).getWritableDatabase();
         mTodos = new ArrayList<>();
 
         for (int i = 0; i < 100; i++) {
