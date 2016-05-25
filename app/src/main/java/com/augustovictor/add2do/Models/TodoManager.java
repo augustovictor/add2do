@@ -84,7 +84,8 @@ public class TodoManager {
     }
 
     public void removeTodo(Todo t) {
-//        this.mTodos.remove(t);
+        String uuidString = t.getmId().toString();
+        mDb.delete(TodoTable.NAME, TodoTable.Cols.UUID + " = ?", new String[] { uuidString });
     }
 
     public void updateTodo(Todo t) {

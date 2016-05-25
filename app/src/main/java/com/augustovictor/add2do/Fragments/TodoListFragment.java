@@ -72,6 +72,7 @@ public class TodoListFragment extends Fragment{
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     mTodo.setmDone(isChecked);
+                    TodoManager.get(getActivity()).updateTodo(mTodo);
                 }
             });
 
