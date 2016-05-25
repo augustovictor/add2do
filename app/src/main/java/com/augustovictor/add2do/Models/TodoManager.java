@@ -1,8 +1,10 @@
 package com.augustovictor.add2do.Models;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.augustovictor.add2do.Database.TodoDbSchema.TodoTable;
 import com.augustovictor.add2do.Helpers.TodoHelper;
 
 import java.util.ArrayList;
@@ -15,21 +17,31 @@ import java.util.UUID;
 public class TodoManager {
     private static TodoManager sTodoManager;
 
-    private List<Todo> mTodos;
+//    private List<Todo> mTodos;
 
     private Context mContext;
     private SQLiteDatabase mDb;
 
+    private static ContentValues getContentValues(Todo todo) {
+        ContentValues values = new ContentValues();
+
+        values.put(TodoTable.Cols.UUID, todo.getmId().toString());
+        values.put(TodoTable.Cols.TITLE, todo.getmTitle());
+        values.put(TodoTable.Cols.DONE, todo.ismDone() ? 1 : 0);
+
+        return values;
+    }
+
     public TodoManager(Context context) {
         mContext = context.getApplicationContext();
         mDb = new TodoHelper(mContext).getWritableDatabase();
-        mTodos = new ArrayList<>();
+//        mTodos = new ArrayList<>();
 
         for (int i = 0; i < 100; i++) {
             Todo todo = new Todo();
             todo.setmTitle("Task " + i);
             todo.setmDone(i%2 == 0);
-            mTodos.add(todo);
+//            mTodos.add(todo);
         }
     }
 
@@ -41,23 +53,24 @@ public class TodoManager {
     }
 
     public List<Todo> getmTodos() {
-        return mTodos;
+        return new ArrayList<>();
     }
 
     public Todo getTodo(UUID todoId) {
-        for (Todo t : this.mTodos) {
-            if (t.getmId().equals(todoId)) {
-                return t;
-            }
-        }
+//        for (Todo t : this.mTodos) {
+//            if (t.getmId().equals(todoId)) {
+//                return t;
+//            }
+//        }
         return null;
     }
 
     public void addTodo(Todo t) {
-        mTodos.add(t);
+        ContentValues values = getContentValues(t);
+        mDb.insert(TodoTable.NAME, null, values);
     }
 
     public void removeTodo(Todo t) {
-        this.mTodos.remove(t);
+//        this.mTodos.remove(t);
     }
 }
