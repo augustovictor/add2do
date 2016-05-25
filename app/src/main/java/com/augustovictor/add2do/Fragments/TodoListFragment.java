@@ -31,6 +31,8 @@ public class TodoListFragment extends Fragment{
     private RecyclerView mRecyclerView;
     private TodoAdapter mAdapter;
 
+    // OVERRIDES
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,8 @@ public class TodoListFragment extends Fragment{
         super.onResume();
         updateUI();
     }
+
+    // HOLDER
 
     private class TodoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -91,6 +95,8 @@ public class TodoListFragment extends Fragment{
             startActivity(i);
         }
     }
+
+    // ADAPTER
 
     private class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
 
@@ -139,13 +145,20 @@ public class TodoListFragment extends Fragment{
         switch (item.getItemId()) {
             case R.id.menu_item_new_todo:
                 Todo todo = new Todo();
-                TodoManager.get(getActivity()).addTodo(todo);
+                addListItem(todo, TodoManager.get(getActivity()).getmTodos().size());
                 Intent i = TodoPagerActivity.newIntent(getActivity(), todo.getmId());
                 startActivity(i);
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // UTILS
+
+    public void addListItem(Todo todo, int position) {
+        TodoManager.get(getActivity()).addTodo(todo);
+        mAdapter.notifyItemChanged(position);
     }
 
     private void updateUI() {
@@ -158,7 +171,7 @@ public class TodoListFragment extends Fragment{
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setTodos(todos);
-            mAdapter.notifyDataSetChanged(); // TODO: 5/24/16 identify changed item's position and use notifyItemChanged(position);
+//            mAdapter.notifyDataSetChanged(); // TODO: 5/24/16 identify changed item's position and use notifyItemChanged(position);
         }
 
         mAdapter = new TodoAdapter(todos);
